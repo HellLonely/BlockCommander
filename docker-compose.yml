@@ -1,0 +1,28 @@
+services:
+  minecraft-server:
+    container_name: "minecraft-server"
+    image: "openjdk:${OPENJDK_VERSION}"
+    ports:
+      - "25565:25565"  # Minecraft default server port
+      - "25575:25575"  # Minecraft default rcon port 
+    volumes:
+      - ./minecraft-data:/data
+      - ./java:/java
+    working_dir: /data
+    tty: true
+    command: ${MINECRAFT_SERVER_COMMAND}
+
+  web-server:
+    container_name: 'web-server'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      XDEBUG_CONFIG: remote_host=host.docker.internal remote_port=9003 remote_enable=1
+    volumes:
+      - ./web:/var/www/html
+      - ./config/php.ini:/usr/local/etc/php/php.ini
+    working_dir: /var/www/html
+    
