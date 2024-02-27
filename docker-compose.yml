@@ -5,12 +5,15 @@ services:
     ports:
       - "25565:25565"  # Minecraft default server port
       - "25575:25575"  # Minecraft default rcon port 
+    environment:
+      EULA: "true"
+      RAM: "${DEDICATED_RAM}"
     volumes:
       - ./minecraft-data:/data
       - ./java:/java
     working_dir: /data
     tty: true
-    command: ${MINECRAFT_SERVER_COMMAND}
+    command: ["sh", "-c", "java ${RAM_MAX} ${RAM_MIN} -jar ../java/${JAR_SERVER_FILE} nogui"]
 
   web-server:
     container_name: 'web-server'
