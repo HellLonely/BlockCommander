@@ -1,7 +1,15 @@
 <?php 
 
     use Style\Style as StyleObject;
-    include ('Styles/Style.php');
+    include ('Style/Style.php');
+
+    use File\File;
+    use File\ServerProperties;
+    require 'File/ServerProperties.php';
+    require 'File/File.php';
+
+
+    var_dump(ServerProperties::getData());
 
 
 ?>
@@ -16,7 +24,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="bg-blue-500">3</div>
+
 </body>
 
 
@@ -24,6 +32,5 @@
     // Tailwind Import 
     echo StyleObject::insertStyleFragment();  
 
-    echo StyleObject::getTailwindLink();
 ?>
 </html>
