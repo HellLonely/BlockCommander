@@ -1,4 +1,6 @@
 services:
+
+  #  Minecraft Server Integration in development.
   # minecraft-server:
   #   container_name: "minecraft-server"
   #   image: "openjdk:${OPENJDK_VERSION}"
@@ -27,5 +29,11 @@ services:
     volumes:
       - ./web:/var/www/html
       - ./config/php.ini:/usr/local/etc/php/php.ini
+      - ./minecraft-data:/var/www/html/minecraft-data/
+      - './config/apache/apache2.conf:/etc/apache2/apache2.conf'
+      - './config/apache/certs/:/etc/apache2/certs/'
+      - './config/apache/ports.conf:/etc/apache2/ports.conf'
+      - './config/apache/sites-available/:/etc/apache2/sites-available/'
+      - './config/apache/mods-available/:/etc/apache2/mods-available/'
     working_dir: /var/www/html
     
