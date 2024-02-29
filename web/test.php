@@ -5,8 +5,9 @@
     use Style\StyleObject;
 
     var_dump(ServerProperties::getData());
-
-    var_dump($obj = new Plugins());
+    $obj = new Plugins();
+    $obj->deletePlugin('arclight-forge-1.20.4-1.0.2.jar');
+    var_dump($obj-> getPluginsList());
 
 
 ?>

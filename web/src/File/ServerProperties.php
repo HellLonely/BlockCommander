@@ -3,7 +3,6 @@
 namespace File;
 
 use Utils\ParseDataProperties;
-
 use File\File;
 
 
@@ -24,7 +23,6 @@ class ServerProperties implements File {
                 if (!empty($line) && $line[0] !== '#') {
                     if (strpos($line, '=') !== false) {
                         list($key, $value) = explode('=', $line, 2);
-                        //$configArray[trim($key)] = trim($value);
                         $configArray[trim($key)] = self::parseDataProperties($value);
                     }
                 }

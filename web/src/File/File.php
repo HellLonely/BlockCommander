@@ -2,7 +2,6 @@
 
 namespace File;
 
-// Verificar si la interfaz ya está definida
 if (!interface_exists('File\File')) {
     interface File {
         const BASIC_FILES = array (
