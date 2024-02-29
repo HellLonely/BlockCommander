@@ -42,5 +42,4 @@ class ServerProperties implements File {
     public static function checkExistFile() {
         return file_exists(self::FILE_PATH);
     }
-
 }
