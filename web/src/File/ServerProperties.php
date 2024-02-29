@@ -3,14 +3,11 @@
 namespace File;
 
 use Utils\ParseDataProperties;
+
 use File\File;
 
 
-require('Utils/Miscelaneus.php');
 
-
-
-require_once 'File.php';
 
 class ServerProperties implements File {
     use ParseDataProperties;
@@ -32,7 +29,6 @@ class ServerProperties implements File {
                     }
                 }
             }
-
             return $configArray;
         }
         

@@ -1,15 +1,12 @@
 <?php 
-
-    use Style\Style as StyleObject;
-    include ('Style/Style.php');
-
-    use File\File;
+    require 'autoload.php';
     use File\ServerProperties;
-    require 'File/ServerProperties.php';
-    require 'File/File.php';
-
+    use File\Plugins;
+    use Style\StyleObject;
 
     var_dump(ServerProperties::getData());
+
+    var_dump($obj = new Plugins());
 
 
 ?>
@@ -30,7 +27,7 @@
 
 <?php
     // Tailwind Import 
-    echo StyleObject::insertStyleFragment();  
+    //echo StyleObject::insertStyleFragment();  
 
 ?>
 </html>
