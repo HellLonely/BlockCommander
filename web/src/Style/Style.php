@@ -7,7 +7,7 @@ class Style {
     const TAILWIND_LINK = 'https://cdn.tailwindcss.com';
     static $totalStyleImports = 0;
     
-    private function __construct() { } // ! It is not allowed to create methods of this class
+    private function __construct(){} // ! It is not allowed to create methods of this class
 
 
     static function insertStyleFragment() {

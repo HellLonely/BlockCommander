@@ -1,43 +1,51 @@
 <?php
-session_start();
-// session_unset();
-use Style\Style as Style;
-require 'Style/Style.php';
-
-use SQLite\SQLiteConnection as SQLiteConnection;
-use SQLite\DBManager as DBManager;
-include ('SQLite/Connection.php');
-include ('SQLite/DBManager.php');
-
-$databaseInstance = SQLiteConnection::getSQLiteInstance();
-$connection = $databaseInstance->getConnection();
-$dbmanager = new DBManager($connection);
+    session_start();
+    require 'autoload.php';
+    // session_unset();
+    use Style\Style as Style;
+    use SQLite\Connection as SQLiteConnection;
+    use SQLite\DBManager as DBManager;
 
 
-if($dbmanager->tableExists('servers')){
-    header('Location: dashboard.php');
-}
+    $databaseInstance = SQLiteConnection::getSQLiteInstance();
+    $connection = $databaseInstance->getConnection();
+    $dbmanager = new DBManager($connection);
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    if(!isset($_SESSION['serverData'])){
-        $_SESSION['serverData'] = array();
+    if($dbmanager->tableExists('servers')){
+        $serverInfo = $dbmanager->getMinecraftServerInfo();
+
+        $_SESSION['serverData']['server_name'] = $serverInfo[0]['name'];
+        $_SESSION['serverData']['server_address']  = $serverInfo[0]['ip'];
+        $_SESSION['serverData']['server_port'] = $serverInfo[0]['port'];
+        $_SESSION['serverData']['server_webpage']  = $serverInfo[0]['webpage'];
+
+        header('Location: dashboard.php');
     }
 
-    foreach($_POST as $key => $val){
-        $_SESSION['serverData'][$key] = $_POST[$key];
-    }
 
-    if(count($_SESSION['serverData']) > 3){
-        if(!$dbmanager->tableExists('servers')){
-            $dbmanager->makeMinecraftServerTable();
-            header('Location: dashboard.php');
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if(!isset($_SESSION['serverData'])){
+            $_SESSION['serverData'] = array();
         }
-    }
-}   
 
-var_dump($_SESSION);
-var_dump($dbmanager->tableExists('servers'));
+        foreach($_POST as $key => $val){
+            $_SESSION['serverData'][$key] = $_POST[$key];
+        }
+
+        if(count($_SESSION['serverData']) > 3){
+            if(!$dbmanager->tableExists('servers')){
+                $dbmanager->makeMinecraftServerTable();
+                $dbmanager->addServerInfo(
+                    $_SESSION['serverData']['server_name'], 
+                    $_SESSION['serverData']['server_address'], 
+                    $_SESSION['serverData']['server_port'],
+                    $_SESSION['serverData']['server_webpage']
+                );
+                header('Location: dashboard.php');
+            }
+        }
+    }   
 ?>
 
 
@@ -71,32 +79,32 @@ var_dump($dbmanager->tableExists('servers'));
                     </div>
                 <?php }else{ ?>
 
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                        Minecraft Server Address
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="username" name="server_address" type="text" placeholder="Server Address">
-                </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            Minecraft Server Address
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="username" name="server_address" type="text" placeholder="Server Address">
+                    </div>
 
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                        Port
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="username" name="server_port" type="text" placeholder="Port">
-                </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            Port
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="username" name="server_port" type="text" placeholder="Port">
+                    </div>
 
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                        WebPage
-                    </label>
-                    <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="username" name="server_webpage" type="text" placeholder="Port">
-                </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            WebPage
+                        </label>
+                        <input
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            id="username" name="server_webpage" type="text" placeholder="WebPage">
+                    </div>
 
                 <?php } ?>
                 <div class="flex items-center justify-center">

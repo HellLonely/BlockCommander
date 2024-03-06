@@ -5,8 +5,8 @@ namespace SQLite;
 use PDO;
 use PDOException;
 
-class SQLiteConnection {
-    const DB_FILE = 'SQLite'.DIRECTORY_SEPARATOR.'database.db';
+class Connection {
+    const DB_FILE = 'src'.DIRECTORY_SEPARATOR.'SQLite'.DIRECTORY_SEPARATOR.'database.db';
     private static $instance;
     private $connection;
 
@@ -30,6 +30,4 @@ class SQLiteConnection {
     public function getConnection() {
         return $this->connection;
     }
-
-
 }

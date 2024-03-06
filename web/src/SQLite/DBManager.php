@@ -46,6 +46,15 @@ class DBManager {
         }
     }
 
+    public function getMinecraftServerInfo(){
+        try{
+            $result = $this->dbConnection->query("SELECT * FROM servers");
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            return null;
+        }
+    }
+
     public function makeMinecraftServerTable(){
         try {
             $createQuery = "CREATE TABLE servers (
@@ -63,6 +72,36 @@ class DBManager {
 
         }catch(PDOException $e){
             return $e;
+        }
+    }
+
+    public function deleteServersTable() {
+        try{
+            $deleteQuery = "DROP TABLE servers";
+            if($this->tableExists('servers')){
+                $this->dbConnection->exec($deleteQuery);
+                return true;   
+            }
+        }catch(PDOException $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function addServerInfo($name, $ip, $port, $webpage) {
+        try{
+            $query = "INSERT INTO servers (name, ip, port, webpage) VALUES (:name, :ip, :port, :webpage)";
+            $statement = $this->dbConnection->prepare($query);
+            $statement->bindParam(':name', $name);
+            $statement->bindParam(':ip', $ip);
+            $statement->bindParam(':port', $port);
+            $statement->bindParam(':webpage', $webpage);
+
+            if($this->tableExists('servers')){
+                $statement->execute();
+                return true;   
+            }
+        }catch(PDOException $e){
+            return $e->getMessage();
         }
     }
 
